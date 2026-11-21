@@ -1,6 +1,6 @@
 services:
-  # Режим розробки: код монтується з хоста, devtools перезапускає застосунок
-  # після компіляції в IDE (target/classes), дебагер підключається на 5005.
+  # Dev mode: the code is mounted from your machine. Devtools restarts the app
+  # after you build in the IDE (target/classes). Attach a debugger on port 5005.
   #   docker compose up --build
   app:
     build:
@@ -16,7 +16,7 @@ services:
       SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2s
       SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1s
 
-  # Продакшн-подібний запуск зібраного jar:
+  # Run the built jar, like in production:
   #   docker compose --profile prod up --build app-prod
   app-prod:
     profiles: ["prod"]
