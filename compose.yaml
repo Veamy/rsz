@@ -1,0 +1,30 @@
+services:
+  # Режим розробки: код монтується з хоста, devtools перезапускає застосунок
+  # після компіляції в IDE (target/classes), дебагер підключається на 5005.
+  #   docker compose up --build
+  app:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "8080:8080"
+      - "127.0.0.1:5005:5005"
+    volumes:
+      - .:/app
+      - m2:/root/.m2
+    environment:
+      SPRING_DEVTOOLS_RESTART_POLL_INTERVAL: 2s
+      SPRING_DEVTOOLS_RESTART_QUIET_PERIOD: 1s
+
+  # Продакшн-подібний запуск зібраного jar:
+  #   docker compose --profile prod up --build app-prod
+  app-prod:
+    profiles: ["prod"]
+    build:
+      context: .
+      target: runtime
+    ports:
+      - "8081:8080"
+
+volumes:
+  m2:
