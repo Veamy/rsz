@@ -13,7 +13,14 @@ public interface BookRepository {
 
     List<Book> findAll();
 
+    /** Books of one genre, case does not matter. */
+    List<Book> findByGenre(String genre);
+
     Optional<Book> findById(Long id);
 
+    /** Creates a new book (when id is null) or replaces an existing one. */
     Book save(Book book);
+
+    /** @return true if the book existed and was removed */
+    boolean deleteById(Long id);
 }
