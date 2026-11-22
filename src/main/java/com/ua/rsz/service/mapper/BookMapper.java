@@ -3,9 +3,10 @@ package com.ua.rsz.service.mapper;
 import com.ua.rsz.domain.Book;
 import com.ua.rsz.web.dto.BookCardDto;
 import com.ua.rsz.web.dto.BookDetailDto;
+import com.ua.rsz.web.dto.BookRequest;
 import org.springframework.stereotype.Component;
 
-/** Turns a {@link Book} into the DTOs we send to the client. */
+/** Turns a {@link Book} into DTOs for the client, and a request back into a {@link Book}. */
 @Component
 public class BookMapper {
 
@@ -30,6 +31,21 @@ public class BookMapper {
                 book.getPages(),
                 book.getCoverUrl(),
                 book.getDescription()
+        );
+    }
+
+    /** Builds a new book from the request. The id stays null: the service sets it. */
+    public Book toDomain(BookRequest request) {
+        return new Book(
+                null,
+                request.title(),
+                request.author(),
+                request.price(),
+                request.publishedYear(),
+                request.genre(),
+                request.pages(),
+                request.coverUrl(),
+                request.description()
         );
     }
 }
