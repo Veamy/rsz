@@ -25,6 +25,13 @@ public class InMemoryBookRepository implements BookRepository {
     }
 
     @Override
+    public List<Book> findByGenre(String genre) {
+        return findAll().stream()
+                .filter(book -> book.getGenre() != null && book.getGenre().equalsIgnoreCase(genre))
+                .toList();
+    }
+
+    @Override
     public Optional<Book> findById(Long id) {
         return Optional.ofNullable(storage.get(id));
     }
@@ -36,5 +43,10 @@ public class InMemoryBookRepository implements BookRepository {
         }
         storage.put(book.getId(), book);
         return book;
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return storage.remove(id) != null;
     }
 }
