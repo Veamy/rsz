@@ -4,6 +4,7 @@ import com.ua.rsz.service.BookService;
 import com.ua.rsz.web.dto.BookCardDto;
 import com.ua.rsz.web.dto.BookDetailDto;
 import com.ua.rsz.web.dto.BookRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import java.util.List;
  *   POST   /api/books           → create, 201
  *   PUT    /api/books/{id}      → update, 200
  *   DELETE /api/books/{id}      → delete, 204
- * A missing id gives 404.
+ * A missing id gives 404, invalid input gives 400.
  */
 @RestController
 @RequestMapping("/api/books")
@@ -49,12 +50,12 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDetailDto create(@RequestBody BookRequest request) {
+    public BookDetailDto create(@Valid @RequestBody BookRequest request) {
         return bookService.create(request);
     }
 
     @PutMapping("/{id}")
-    public BookDetailDto update(@PathVariable Long id, @RequestBody BookRequest request) {
+    public BookDetailDto update(@PathVariable Long id, @Valid @RequestBody BookRequest request) {
         return bookService.update(id, request);
     }
 
