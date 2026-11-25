@@ -1,6 +1,7 @@
 package com.ua.rsz.repository;
 
 import com.ua.rsz.domain.Book;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.Comparator;
@@ -10,8 +11,13 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-/** Keeps books in memory (no database yet). */
+/**
+ * Keeps books in memory, without a database.
+ * Used only with the "inmemory" profile: --spring.profiles.active=inmemory.
+ * Normally the app uses JpaBookRepositoryAdapter (PostgreSQL).
+ */
 @Repository
+@Profile("inmemory")
 public class InMemoryBookRepository implements BookRepository {
 
     private final Map<Long, Book> storage = new ConcurrentHashMap<>();
