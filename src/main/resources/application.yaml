@@ -2,6 +2,24 @@ spring:
   application:
     name: rsz
 
+  # PostgreSQL from docker-compose.yml. Environment variables can override these values
+  # (docker-compose sets SPRING_DATASOURCE_URL to the "postgres" service).
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookstore}
+    username: ${SPRING_DATASOURCE_USERNAME:bookstore}
+    password: ${SPRING_DATASOURCE_PASSWORD:bookstore}
+  jpa:
+    hibernate:
+      # Hibernate creates and updates tables from the entities. Fine for learning;
+      # in production use validate/none and migrations (Liquibase, lesson 2.2).
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+    # Turn off Open Session In View: the DB session must not stay open for the whole HTTP request.
+    open-in-view: false
+
 server:
   port: 8080
 

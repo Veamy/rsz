@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 /**
- * Adds starter books when the app starts.
+ * Adds starter books when the app starts, but only if there are no books yet.
+ * The data lives in PostgreSQL now, so without this check every restart would add them again.
  * Kept apart from the repository: the repository stores books, the seeder fills it.
  */
 @Component
@@ -23,6 +24,9 @@ public class BookSeeder implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        if (!repository.findAll().isEmpty()) {
+            return;
+        }
         repository.save(new Book(null, "Кобзар", "Тарас Шевченко",
                 new BigDecimal("420.00"), 1840, "Поезія", 704,
                 "/images/covers/kobzar.svg",

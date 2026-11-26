@@ -8,11 +8,19 @@ import com.ua.rsz.web.dto.BookCardDto;
 import com.ua.rsz.web.dto.BookDetailDto;
 import com.ua.rsz.web.dto.BookRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/** Implements {@link BookService}. Spring passes the dependencies into the constructor. */
+/**
+ * Implements {@link BookService}. Spring passes the dependencies into the constructor.
+ *
+ * Transactions: by default every method is read-only (no dirty checking, cheaper).
+ * Methods that change data have their own @Transactional, so "check then write"
+ * in update and delete runs as one unit: all or nothing.
+ */
 @Service
+@Transactional(readOnly = true)
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
@@ -39,12 +47,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDetailDto create(BookRequest request) {
         Book book = mapper.toDomain(request);   // id is null, the repository will set it
         return mapper.toDetail(repository.save(book));
     }
 
     @Override
+    @Transactional
     public BookDetailDto update(Long id, BookRequest request) {
         getExisting(id);                        // 404 if the book does not exist
         Book book = mapper.toDomain(request);
@@ -53,6 +63,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if (!repository.deleteById(id)) {
             throw new BookNotFoundException(id);

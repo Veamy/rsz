@@ -1,6 +1,6 @@
 # Приклади запитів до API книгарні
 
-Запуск: `docker compose up --build` (або `./mvnw spring-boot:run`). База: `http://localhost:8080`.
+Запуск: `docker compose up --build` (або `docker compose up -d postgres` і `./mvnw spring-boot:run`). База: `http://localhost:8080`.
 
 | Операція | Метод і шлях | Успіх | Помилка |
 |---|---|---|---|
